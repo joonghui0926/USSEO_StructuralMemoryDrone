@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, AlertCircle } from 'lucide-react'; 
+import { ArrowRight, AlertCircle } from 'lucide-react';
 
 const Login = () => {
   const { loginWithGoogle, login, signup } = useAuth();
@@ -18,7 +18,6 @@ const Login = () => {
       await loginWithGoogle();
       navigate('/dashboard');
     } catch (error) {
-      console.error("Auth failed", error);
       setError("Failed to sign in with Google.");
     }
   };
@@ -36,7 +35,6 @@ const Login = () => {
       }
       navigate('/dashboard');
     } catch (error) {
-      console.error("Auth error:", error);
       if (error.code === 'auth/invalid-credential') {
          setError("Incorrect email or password.");
       } else if (error.code === 'auth/email-already-in-use') {
@@ -51,8 +49,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full bg-white font-sans text-slate-900">
-   
+    <div className="flex min-h-screen w-full bg-white font-sans text-slate-900 relative">
       <div className="hidden lg:flex lg:w-1/2 relative bg-brand-950 overflow-hidden">
         <img 
           src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&q=80&w=2000" 
@@ -111,7 +108,7 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="block w-full px-4 py-3 bg-slate-50 border-b-2 border-slate-200 focus:border-brand-900 focus:bg-white outline-none transition-colors rounded-t-md" 
-                placeholder="engineer@google.com" 
+                placeholder="engineer@kaist.ac.kr" 
               />
             </div>
             <div>
@@ -158,11 +155,11 @@ const Login = () => {
               <button 
                 onClick={() => {
                   setIsSignUp(!isSignUp);
-                  setError(''); 
+                  setError('');
                 }}
                 className="font-semibold text-brand-900 hover:underline underline-offset-4"
               >
-                {isSignUp ? "Log in" : "Sign up"}
+                {isSignUp ? "Log in" : "Request Access"}
               </button>
             </p>
         </div>

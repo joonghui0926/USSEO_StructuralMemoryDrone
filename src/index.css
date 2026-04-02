@@ -2,15 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-slate-50 text-slate-900 antialiased;
-  font-feature-settings: "cv11", "ss01";
+@layer base {
+  body {
+    @apply font-sans antialiased text-slate-800 bg-[#FDFDFD];
+    font-feature-settings: "cv11", "ss01";
+  }
 }
 
-.no-scrollbar::-webkit-scrollbar {
+.papa-parse-uncommented {
   display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }

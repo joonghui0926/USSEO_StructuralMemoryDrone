@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, LayoutGrid, Radio } from 'lucide-react';
+import { LogOut, LayoutGrid, Radio, ShieldCheck } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Layout = ({ children }) => {
@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD]">
-      <nav className="fixed top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-100">
+      <nav className="fixed top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-between h-20 items-center">
             <div className="flex items-center gap-12">
@@ -18,8 +18,11 @@ const Layout = ({ children }) => {
                 className="cursor-pointer flex items-center gap-3 group" 
                 onClick={() => navigate('/dashboard')}
               >
+                <div className="w-8 h-8 bg-brand-900 rounded-lg flex items-center justify-center text-white font-bold tracking-tighter shadow-lg shadow-brand-900/20 group-hover:bg-brand-800 transition-colors">
+                  <ShieldCheck size={18}/>
+                </div>
                 <h1 className="text-xl font-bold text-brand-950 tracking-tight">
-                  Structural Memory
+                  Structural Memory Drone
                 </h1>
               </div>
               

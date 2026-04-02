@@ -40,13 +40,13 @@ const Dashboard = () => {
     <Layout>
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-brand-950 tracking-tight">Infrastructure Status</h2>
-          <p className="text-slate-500 mt-2">Real-time memory logs & drone telemetry.</p>
+          <h2 className="text-3xl font-bold text-brand-950 tracking-tight">Infrastructure Overview</h2>
+          <p className="text-slate-500 mt-2">Trend-based Structural Memory drone monitoring system.</p>
         </div>
         <div className="flex gap-3">
-             <div className="px-4 py-2 bg-white rounded-full border border-slate-200 text-sm font-medium text-slate-600 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                System Operational
+             <div className="px-4 py-2 bg-emerald-50 rounded-full text-sm font-medium text-emerald-700 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Network Nominal
              </div>
              {userRole === 'admin' && (
                <button 
@@ -60,60 +60,47 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {bridges.map((bridge) => (
           <div 
             key={bridge.id}
             onClick={() => navigate(`/bridge/${bridge.id}`)}
-            className="group bg-white rounded-xl p-0 hover:shadow-soft transition-all duration-300 cursor-pointer border border-slate-100 hover:border-brand-100 overflow-hidden"
+            className="group bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
           >
-            <div className="h-48 relative overflow-hidden">
-                <img 
-                  src={bridge.image} 
-                  alt={bridge.name} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-4 left-5 text-white">
-                    <h3 className="text-xl font-bold">{bridge.name}</h3>
-                    <p className="text-xs opacity-80 font-medium uppercase tracking-wider">{bridge.location}</p>
-                </div>
-                <div className="absolute top-4 right-4">
-                    <span className={`px-3 py-1 rounded text-xs font-bold backdrop-blur-md border border-white/10 ${
-                        bridge.riskTrend === 'Increasing' ? 'bg-red-500/20 text-red-50' : 
-                        bridge.riskTrend === 'Stable' ? 'bg-emerald-500/20 text-emerald-50' : 'bg-orange-500/20 text-orange-50'
-                    }`}>
-                        {bridge.status}
-                    </span>
-                </div>
+            <div className="h-48 overflow-hidden relative">
+              <img src={bridge.image} alt={bridge.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute top-4 right-4">
+                 <span className={`
+                    px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md
+                    ${bridge.status === 'Active' ? 'bg-emerald-500/20 text-emerald-800' : ''}
+                    ${bridge.status === 'Review' ? 'bg-orange-500/20 text-orange-800' : ''}
+                    ${bridge.status === 'Attention' ? 'bg-red-500/20 text-red-800' : ''}
+                 `}>
+                    {bridge.status}
+                 </span>
+              </div>
             </div>
             
             <div className="p-6">
-              <div className="grid grid-cols-2 gap-6 mb-6">
+              <div className="flex justify-between items-start mb-2">
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Risk Index</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className={`text-2xl font-bold ${bridge.riskScore > 50 ? 'text-red-600' : 'text-brand-900'}`}>
-                        {bridge.riskScore}
-                    </span>
-                    <span className="text-xs text-slate-400">/ 100</span>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Trend</p>
-                  <div className="flex items-center gap-1.5">
-                    {bridge.riskTrend === 'Increasing' ? <Activity size={14} className="text-red-500"/> : <Activity size={14} className="text-emerald-500"/>}
-                    <span className="text-sm font-medium text-slate-700">{bridge.riskTrend}</span>
-                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-1 tracking-tight">{bridge.name}</h3>
+                  <p className="text-sm text-slate-500">{bridge.location}</p>
                 </div>
               </div>
-
-              <div className="pt-4 border-t border-slate-50 flex justify-between items-center">
-                 <div className="flex items-center gap-2 text-xs text-slate-500">
-                    <Wind size={14} />
-                    <span>Drone: {bridge.droneStatus}</span>
-                 </div>
-                 <span className="text-xs text-slate-400 font-mono">Last: {bridge.lastScan}</span>
+              
+              <div className="mt-6 flex items-center justify-between pt-4 border-t border-slate-50">
+                <div className="flex flex-col">
+                  <span className="text-xs text-slate-400 font-bold uppercase tracking-widest">Risk Index</span>
+                  <span className={`text-xl font-bold tracking-tight ${bridge.riskScore > 50 ? 'text-red-600' : 'text-emerald-600'}`}>
+                    {bridge.riskScore}<span className="text-sm text-slate-400 font-normal">/100</span>
+                  </span>
+                </div>
+                <div className="h-8 w-[1px] bg-slate-100 mx-2"></div>
+                <div className="flex flex-col items-end">
+                  <span className="text-xs text-slate-400 font-bold uppercase tracking-widest">Drone Status</span>
+                  <span className="text-sm font-medium text-slate-700">{bridge.droneStatus}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -137,8 +124,8 @@ const Dashboard = () => {
                   type="text" 
                   value={newBridge.name}
                   onChange={(e) => setNewBridge({...newBridge, name: e.target.value})}
-                  className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
-                  placeholder="e.g. Omega Tunnel"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  placeholder="Omega Tunnel"
                 />
               </div>
               <div>
@@ -148,8 +135,8 @@ const Dashboard = () => {
                   type="text" 
                   value={newBridge.location}
                   onChange={(e) => setNewBridge({...newBridge, location: e.target.value})}
-                  className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
-                  placeholder="e.g. District 9"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  placeholder="District 9"
                 />
               </div>
               <button 

@@ -3,9 +3,9 @@ import {
   onAuthStateChanged, 
   signInWithPopup, 
   signOut, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword,    
-  updateProfile                 
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile
 } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase';
 
@@ -54,8 +54,8 @@ export const AuthProvider = ({ children }) => {
   const value = { 
     currentUser, 
     userRole, 
-    signup, 
-    login,  
+    signup,
+    login,
     loginWithGoogle, 
     logout 
   };
