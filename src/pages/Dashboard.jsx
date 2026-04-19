@@ -6,8 +6,8 @@ import { useAuth } from '../context/AuthContext';
 
 const initialBridges = [
   { id: 1, name: "Alpha Bridge", location: "Sector 4, Urban District", status: "Active", riskTrend: "Stable", riskScore: 12, lastScan: "4h ago", droneStatus: "Docked", image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=2070&auto=format&fit=crop" },
-  { id: 2, name: "Beta Overpass", location: "Coastal Highway", status: "Review", riskTrend: "Increasing", riskScore: 78, lastScan: "20m ago", droneStatus: "In Flight", image: "https://images.unsplash.com/photo-1545558014-8692077e9b5c?q=80&w=2070&auto=format&fit=crop" },
-  { id: 3, name: "Gamma Railway", location: "Industrial Zone", status: "Attention", riskTrend: "Slight Shift", riskScore: 45, lastScan: "1d ago", droneStatus: "Maintenance", image: "https://cdn.railmarket.com/cdn-cgi/image/format=auto/hub/news/431F593F8B563EEB.jpg" },
+  { id: 2, name: "Beta Bridge", location: "Coastal Highway", status: "Review", riskTrend: "Increasing", riskScore: 78, lastScan: "20m ago", droneStatus: "In Flight", image: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=2070&auto=format&fit=crop" },
+  { id: 3, name: "Gamma Bridge", location: "Industrial Zone", status: "Attention", riskTrend: "Slight Shift", riskScore: 45, lastScan: "1d ago", droneStatus: "Maintenance", image: "https://img.sbs.co.kr/newimg/news/20230501/201779329_500.jpg" },
 ];
 
 const Dashboard = () => {
