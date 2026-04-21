@@ -14,8 +14,7 @@ const BridgeDetail = () => {
   const { id } = useParams();
   const { userRole } = useAuth(); 
 
-  // 상태 관리
-  const [uploadedImage, setUploadedImage] = useState(null); 
+  const [uploadedImage, setUploadedImage] = useState(null);
   const [vibrationData, setVibrationData] = useState([]);
   const [crackAnalysis, setCrackAnalysis] = useState(null);
   const [graphInterpretation, setGraphInterpretation] = useState(null);
@@ -24,7 +23,6 @@ const BridgeDetail = () => {
   const [isAnalyzingImage, setIsAnalyzingImage] = useState(false);
   const [isAnalyzingCsv, setIsAnalyzingCsv] = useState(false);
 
-  // 1. 초기 로딩 시 Firebase Firestore에서 최근 데이터 불러오기
   useEffect(() => {
     const fetchSavedData = async () => {
       if (!id) return;
@@ -58,15 +56,11 @@ const BridgeDetail = () => {
       setIsAnalyzingImage(true);
       
       try {
-        // A. Firebase Storage에 실제 이미지 파일 업로드
         const storageRef = ref(storage, `bridges/${id}/${Date.now()}_${file.name}`);
         const uploadResult = await uploadBytes(storageRef, file);
-        
-        // B. 업로드된 이미지의 공용 URL 가져와서 화면에 띄우기
         const downloadURL = await getDownloadURL(uploadResult.ref);
-        setUploadedImage(downloadURL); 
+        setUploadedImage(downloadURL);
 
-        // C. 파일을 Base64로 변환하여 GPT 비전 분석에 전송
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = async () => {
@@ -123,7 +117,6 @@ const BridgeDetail = () => {
             const result = await analyzeData({ type: 'csv', payload: summaryData });
             setGraphInterpretation(result.data);
 
-            // Firestore DB에 CSV 데이터, 분석 결과, 환경 데이터 저장 (영구 보존)
             await setDoc(doc(db, 'bridges', id), {
                 vibrationData: validData,
                 graphInterpretation: result.data,
@@ -165,7 +158,6 @@ const BridgeDetail = () => {
               </div>
               
               <div className="bg-slate-900 rounded-2xl aspect-[16/10] relative overflow-hidden group shadow-inner">
-                  {/* 업로드된 이미지가 있으면 보여주고, 없으면 기존 UI 표시 */}
                   {uploadedImage ? (
                       <img src={uploadedImage} alt="Bridge Inspected" className="w-full h-full object-cover" />
                   ) : (
@@ -180,7 +172,6 @@ const BridgeDetail = () => {
                       </>
                   )}
 
-                  {/* 장식용 마커 오버레이 */}
                   <div className="absolute top-1/2 left-1/3">
                       <div className="w-3 h-3 bg-emerald-400 rounded-full shadow-[0_0_15px_rgba(52,211,153,0.8)] animate-pulse"></div>
                   </div>

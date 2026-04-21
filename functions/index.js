@@ -16,25 +16,28 @@ exports.analyzeStructuralData = onCall(
     try {
       if (type === "image") {
         const response = await openai.chat.completions.create({
-          model: "gpt-5.4", 
+          model: "gpt-5.4",
           messages: [
             {
               role: "system",
-              content: `You are a Bridge Structural Safety Diagnosis AI. Look at the attached photo and provide a response ONLY in valid JSON format regarding the following items. Use exactly these keys:
-              {
-                "Crack_Morphology": "vertical/horizontal/diagonal",
-                "Estimated_Size": "Estimated length and width",
-                "Distribution_Pattern": "Distribution pattern",
-                "Structural_Probability": "Surface vs. structural crack probability",
-                "Leakage_Signs": "Presence of leakage signs",
-                "Exposed_Rebar": "Presence of exposed rebar"
-              }`
+              content: `You are a bridge and structural safety diagnosis expert. Analyze the inspection image and respond ONLY in valid JSON using exactly these keys:
+{
+  "rebar": "Whether exposed rebar is visible and corrosion risk if leakage is detected",
+  "size": "Estimated crack length and width relative to the structure boundary",
+  "probability": "Probability this is a structural crack vs. surface-level crack",
+  "morphology": "Crack orientation: vertical / horizontal / diagonal",
+  "leakage": "Leakage presence and internal rebar corrosion risk assessment",
+  "pattern": "Overall crack distribution pattern across the surface"
+}
+Rules:
+- Estimate crack size relative to visible structural boundaries, not in absolute units.
+- If leakage is detected, always note the possibility of internal rebar corrosion.`
             },
             {
               role: "user",
               content: [
                 { type: "text", text: "Analyze this bridge inspection image." },
-                { type: "image_url", image_url: { url: payload } } 
+                { type: "image_url", image_url: { url: payload } }
               ]
             }
           ],
@@ -49,14 +52,16 @@ exports.analyzeStructuralData = onCall(
           messages: [
             {
               role: "system",
-              content: `You are an AI analyzing 15-second vibration data of a bridge structure.
-        Respond ONLY in valid JSON format using the exact keys below. Keep the values extremely concise and structured:
-        {
-          "Summary": "Provide a maximum 1-sentence summary of the overall status.",
-          "Dominant_Frequency": "Numeric value with 'Hz' unit (e.g., '2.4 Hz').",
-          "Anomaly_Detected": "Respond strictly with 'Yes' or 'No'.",
-          "Advice": "Provide 1 short sentence of immediate action required."
-        }`
+              content: `You are a bridge and structural safety diagnosis expert. Analyze the 15-second vibration sensor data and respond ONLY in valid JSON using exactly these keys:
+{
+  "frequency": "Dominant frequency with Hz unit (e.g. '0.35 Hz'). Flag as structural instability if outside 0.1–0.5 Hz range.",
+  "summary": "One sentence summarizing overall structural vibration status.",
+  "anomaly": true or false,
+  "advice": "One sentence of immediate action. Use CRITICAL rating if both visual and vibration data indicate abnormality."
+}
+Rules:
+- Vibrations outside the 0.1–0.5 Hz range must be classified as structural instability.
+- Any high-amplitude spike between 8–10 seconds must be labeled as a Transient Event.`
             },
             {
               role: "user",
